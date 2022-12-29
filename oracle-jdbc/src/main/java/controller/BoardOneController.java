@@ -28,7 +28,7 @@ public class BoardOneController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8"); // 인코딩
 		
 		if(request.getParameter("boardNo")==null) { // 파라메타 값 유효성 검사
-			response.sendRedirect(request.getContextPath()+"/BoardListController");
+			response.sendRedirect(request.getContextPath()+"/board/boardList");
 			return;
 		}
 		

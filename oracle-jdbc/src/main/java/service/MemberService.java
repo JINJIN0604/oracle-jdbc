@@ -86,5 +86,32 @@ public class MemberService {
 		}
 		return row;
 	}
+	// 회원정보수정
+	public int modifyMember(Member member) {
+		int row = 0;
+		Connection conn = null;
+		try {
+			conn = DBUtil.getConnection();
+			this.memberDao = new MemberDao();
+			row = memberDao.modifyMember(conn, member);
+			conn.commit();
+		} catch (Exception e) {
+			try {
+				conn.rollback();
+			}catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return row;
+	}
+	
+	
 	
 }

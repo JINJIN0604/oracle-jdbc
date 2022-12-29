@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,8 +32,11 @@
 		</tr>
 	</table>
 	<div>
-		<a href='${pageContext.request.contextPath}/board/modifyBoard?boardNo=${b.boardNo}'>수정</a>
-		<a href='${pageContext.request.contextPath}/board/removeBoard?boardNo=${b.boardNo}'>삭제</a>
+	<!-- 회원과 작성자가 동일할때 수정/삭제 버튼 보여주기 -->
+	<c:if test="${loginMember.memberId == b.memberId}"> 
+		<a href='${pageContext.request.contextPath}/board/modifyBoard?boardNo=${b.boardNo}&memberId=${b.memberId}'>수정</a>
+		<a href='${pageContext.request.contextPath}/board/removeBoard?boardNo=${b.boardNo}&memberId=${b.memberId}'>삭제</a>
+	</c:if>
 	</div>
 </body>
 </html>

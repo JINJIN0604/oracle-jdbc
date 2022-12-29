@@ -23,6 +23,7 @@
 				</td>
 			</tr>
 		</table>
+		<a href="${pageContext.request.contextPath}/member/addMember">회원가입</a>
 	</form>
 </body>
 </html>

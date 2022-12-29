@@ -14,7 +14,7 @@ public class BoardDao {
 		String sql = "SELECT board_no boardNo, board_title boardTitle, createdate"
 				+ " FROM (SELECT rownum rnum, board_no, board_title, createdate"
 				+ "			FROM (SELECT board_no, board_title, createdate"
-				+ "					FROM board ORDER BY board_no DESC))"
+				+ "					FROM board ORDER BY board_no ASC))"
 				+ " WHERE rnum BETWEEN ? AND ?"; // WHERE rnum >=? AND rnum <=?;
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, beginRow);
@@ -57,71 +57,42 @@ public class BoardDao {
 		if(row == 1) {
 			System.out.println("추가성공");
 			return 1;
-		} else {
-			System.out.println("추가실패");
 		}
 		return row;
 	}
 	
 	// 글 수정
-	public int modifyBoard(Connection conn, Board board) throws Exception {
+	public int modifyBoard(Connection conn, Board board, String memberId) throws Exception {
 		int row = 0;
-		String sql = "UPDATE board SET board_title=?, board_content=?, WHERE board_No=?";
+		String sql = "UPDATE board SET board_title=?, board_content=? WHERE board_No=? AND member_id=?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, board.getBoardTitle());
 		stmt.setString(2, board.getBoardContent());
 		stmt.setInt(3, board.getBoardNo());
+		stmt.setString(4, board.getMemberId());
+		System.out.println(board+"<-- dao board");
 		// 디버깅 
 		row = stmt.executeUpdate();
 		if(row == 1) {
-			System.out.println("입력성공");
+			System.out.println("수정성공");
 			return 1;
-		} else {
-			System.out.println("입력실패");
 		}
 		return row;
-	
+	}
 	// 글 삭제
-	
-	
-	
-	
-	
-	
-	/*
-public int insertBoard(Connection conn, Board board) throws SQLException { // board 추가
+	public int removeBoard(Connection conn, int boardNo, String memberId) throws Exception {
 		int row = 0;
-		PreparedStatement stmt = null;
-		String sql = "INSERT INTO board (board_no, board_title, board_content, member_id, updatedate, createdate) VALUES (board_seq.nextval,?,?,?,sysdate,sysdate)";
-		stmt = conn.prepareStatement(sql);
-		stmt.setString(1, board.getBoardTitle());
-		stmt.setString(2, board.getBoardContent());
-		stmt.setString(3, board.getMemberId());
-		row = stmt.executeUpdate();
-		stmt.close();
-		return row;
-	}
-	public int updateBoard(Connection conn, Board board) throws SQLException {
-		int row = 0;
-		PreparedStatement stmt = null;
-		String sql = "UPDATE board SET(board_title=?, board_content=?, updatedate=sysdate)";
-		stmt = conn.prepareStatement(sql);
-		stmt.setString(1, board.getBoardTitle());
-		stmt.setString(2, board.getBoardContent());
-		row = stmt.executeUpdate();
-		stmt.close();
-		return row;
-	}
-	public int deleteBoard(Connection conn, int boardNo) throws SQLException { // board 삭제
-		int row = 0;
-		PreparedStatement stmt = null;
-		String sql = "DELETE FROM board WHERE board_no=?";
-		stmt = conn.prepareStatement(sql);
+		String sql = "DELETE FROM board WHERE board_no=? AND member_id=?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, boardNo);
+		stmt.setString(2, memberId);
+		System.out.println(boardNo+"<-- dao boardNo");
+		System.out.println(memberId+"<-- dao memberId");
 		row = stmt.executeUpdate();
-		stmt.close();
+		if(row == 1){
+			System.out.println("삭제성공");
+			return 1;
+		}
 		return row;
 	}
-	 */
-}
 }

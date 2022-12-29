@@ -41,20 +41,20 @@ public class AddBoardController extends HttpServlet {
 		String boardTitle = request.getParameter("boardTitle");
 		String boardContent = request.getParameter("boardContent");
 		String memberId = request.getParameter("memberId");
-		System.out.println(boardTitle+"<-- boardTitle");
-		System.out.println(boardContent+"<-- boardContent");
-		System.out.println(memberId+"<-- memberId");
+		System.out.println(boardTitle+"<-- AddBoardController boardTitle");
+		System.out.println(boardContent+"<-- AddBoardController boardContent");
+		System.out.println(memberId+"<-- AddBoardController memberId");
 		
 		Board board = new Board(); //vo
 		board.setBoardTitle(boardTitle);
 		board.setBoardContent(boardContent);
 		board.setMemberId(memberId);
-		System.out.println(board+"<-- board");
+		System.out.println(board+"<-- AddBoardController board");
 		
 		this.boardService = new BoardService();
-		int row=boardService.addBoard(board);
+		int row = boardService.addBoard(board);
 		if(row == 1) {
-			System.out.println(row+"<-- row");
+			System.out.println(row+"<-- AddBoardController row");
 		}
 		// 뷰가 없다
 		response.sendRedirect(request.getContextPath()+"/board/boardList");

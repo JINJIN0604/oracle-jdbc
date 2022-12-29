@@ -95,13 +95,13 @@ public class BoardService {
 	}
 	
 	// 글수정
-	public int modifyBoard(Board board) {
+	public int modifyBoard(Board board, String memberId) {
 		int row = 0;
 		Connection conn = null;
 		try {
 			conn = DBUtil.getConnection();
 			boardDao = new BoardDao();
-			row = boardDao.modifyBoard(conn, board);
+			row = boardDao.modifyBoard(conn, board, memberId);
 			conn.commit();
 		} catch (Exception e) {
 			try {
@@ -119,6 +119,32 @@ public class BoardService {
 		}
 		return row;
 	}
-
+	
+	// 글삭제
+	public int removeBoard(int boardNo, String memberId) {
+		int row = 0;
+		Connection conn = null;
+		try {
+			conn = DBUtil.getConnection();
+			boardDao = new BoardDao();
+			row = boardDao.removeBoard(conn, boardNo, memberId);
+			System.out.println(row + "<-- service row");
+			conn.commit();
+		} catch (Exception e) {
+			try {
+				conn.rollback();
+			}catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return row;
+	}
 }
 

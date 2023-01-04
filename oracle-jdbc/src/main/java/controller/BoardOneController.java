@@ -14,17 +14,6 @@ import vo.Board;
 public class BoardOneController extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		/*
-		 * view메뉴구성
-		 * 글수정(로그인멤버 == 글쓴이)
-		 * 글삭제(로그인멤버 == 글쓴이)
-		 * 
-		 * 
-		 */
-		
-		
-		
-		
 		request.setCharacterEncoding("UTF-8"); // 인코딩
 		
 		if(request.getParameter("boardNo")==null) { // 파라메타 값 유효성 검사

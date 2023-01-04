@@ -9,16 +9,29 @@ import vo.Board;
 
 public class BoardDao {
 	// 검색 추가
-	public ArrayList<Board> selectBoardListByPage(Connection conn, int beginRow, int endRow) throws Exception {
+	public ArrayList<Board> selectBoardListByPage(Connection conn, int beginRow, int endRow, String search) throws Exception {
 		ArrayList<Board> list = new ArrayList<Board>();
-		String sql = "SELECT board_no boardNo, board_title boardTitle, createdate"
-				+ " FROM (SELECT rownum rnum, board_no, board_title, createdate"
-				+ "			FROM (SELECT board_no, board_title, createdate"
-				+ "					FROM board ORDER BY board_no ASC))"
-				+ " WHERE rnum BETWEEN ? AND ?"; // WHERE rnum >=? AND rnum <=?;
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, beginRow);
-		stmt.setInt(2, endRow);
+		PreparedStatement stmt = null;
+		if(search == null || search.equals("")) {
+			String sql = "SELECT board_no boardNo, board_title boardTitle, createdate"
+					+ " FROM (SELECT rownum rnum, board_no, board_title, createdate"
+					+ "			FROM (SELECT board_no, board_title, createdate"
+					+ "					FROM board ORDER BY board_no ASC))"
+					+ " WHERE rnum BETWEEN ? AND ?"; // WHERE rnum >=? AND rnum <=?;
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, beginRow);
+			stmt.setInt(2, endRow);
+		} else {
+			String sql = "SELECT board_no boardNo, board_title boardTitle, createdate"
+					+ "	  FROM (SELECT rownum rnum, board_no, board_title, createdate"
+					+ "			FROM (SELECT board_no, board_title, createdate"
+					+ "				  FROM board ORDER BY board_no DESC))"
+					+ "	  WHERE board_title LIKE ? AND rnum BETWEEN ? AND ?"; // WHERE rnum >= ? AND rnum <= ?;
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, "%"+search+"%");
+			stmt.setInt(2, beginRow);
+			stmt.setInt(3, endRow);
+		}
 		ResultSet rs = stmt.executeQuery();
 		while(rs.next()) {
 			Board b = new Board();
@@ -27,6 +40,9 @@ public class BoardDao {
 			b.setCreatedate(rs.getString("createdate"));
 			list.add(b);
 		}
+		stmt.close();
+		rs.close();
+		
 		return list;
 	}
 

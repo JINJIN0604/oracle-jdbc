@@ -82,3 +82,38 @@ public class MemberDao {
 		return row;
 	}
 }
+
+
+/*
+public boolean selectId(Connection conn, String memberId) throws SQLException { // 아이디 중복확인
+	boolean result = true;
+	PreparedStatement stmt = null;
+	ResultSet rs = null;
+	String sql = "SELECT member_id memberId FROM member WHERE member_id=?";
+	stmt = conn.prepareStatement(sql);
+	stmt.setString(1, memberId);
+	rs = stmt.executeQuery();
+	if(rs.next()) { // 중복시에 false 반환
+		result = false;
+	}
+	rs.close();
+	stmt.close();
+	return result;
+}
+
+	public Member selectMemberOne(Connection conn, String memberId) throws SQLException { // 회원정보보기
+		Member member = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT member_id memberId, member_name memberName, createdate FROM member WHERE member_id=?";
+		stmt = conn.prepareStatement(sql);
+		stmt.setString(1, memberId);
+		rs = stmt.executeQuery();
+		if(rs.next()) {
+			member = new Member(memberId, null, rs.getString("memberName"),null,rs.getString("createdate")); 
+		}
+		rs.close();
+		stmt.close();
+		return member;
+	}
+*/
